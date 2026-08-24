@@ -1,4 +1,4 @@
-import { BACKGROUND, TestResults, advanceToFrame, getShapes, runMouseClick, testClassIsDefined, testClassMethodIsDefined, testExpectedClassConstructorArgs, testExpectedClassMethodArgs, testSettingIsCalled } from "../../lib/test-utils.js";
+import { simulateMousePosition, BACKGROUND, TestResults, advanceToFrame, getShapes, runMouseClick, testClassIsDefined, testClassMethodIsDefined, testExpectedClassConstructorArgs, testExpectedClassMethodArgs, testSettingIsCalled } from "https://cdn.jsdelivr.net/gh/Supportive-IDE/p5js-testing-demo@latest/p5jsTestingLibrary.js";
 
 /**
  * A hacky solution to wait for p5js to load the canvas. Include in all exercise test files.
@@ -83,20 +83,22 @@ async function runTests(canvas) {
         TestResults.addWarning("<code>background()</code> should not be called in <code>draw()</code> for this exercise unless the ellipses are saved to a global array.");
     }
     const shapes1 = [...getShapes()];
-    mouseX = 100;
-    mouseY = 100;
+    // mouseX = 100;
+    // mouseY = 100;
+    simulateMousePosition(100, 100);
     runMouseClick();
-    advanceToFrame(frameCount + 1);
+    await advanceToFrame(frameCount + 1);
     const shapes2 = [...getShapes()];
     if (shapes2.length === shapes1.length + 1) {
         TestResults.addPass("When the mouse is clicked at 100, 100, a new shape is added to the canvas.");
     } else {
         TestResults.addFail(`When the mouse is clicked at 100, 100, a new ellipse should be drawn on the canvas. Before the click, there were ${shapes1.length} shapes on the canvas, after the click there are ${shapes2.length} shapes.`);
     }
-    mouseX = -5;
-    mouseY = 100;
+    // mouseX = -5;
+    // mouseY = 100;
+    simulateMousePosition(-5, 100);
     runMouseClick();
-    advanceToFrame(frameCount + 1);
+    await advanceToFrame(frameCount + 1);
     const shapes3 = [...getShapes()];
     if (shapes3.length === shapes2.length) {
         TestResults.addPass("When the mouse is clicked outside the canvas at -5, 100, the number of shapes on the canvas is unchanged.");
